@@ -1,0 +1,399 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Waiter Dashboard - Smart Restaurant</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    :root{--primary:#f97316;--success:#22c55e;--danger:#ef4444;--warning:#facc15;--bg:#fef3c7;}
+    *{box-sizing:border-box;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;margin:0;padding:0;}
+    body{background:linear-gradient(135deg,var(--bg) 0%,#fed7aa 50%,#fdba74 100%);min-height:100vh;color:#1f2937;}
+    nav{background:linear-gradient(90deg,#0f172a,#1e293b);padding:15px 25px;display:flex;justify-content:space-between;align-items:center;color:#fff;}
+    .brand{font-size:20px;font-weight:700;}
+    .container{max-width:1400px;margin:0 auto;padding:25px;}
+    .header{background:#fff;padding:25px;border-radius:20px;margin-bottom:25px;box-shadow:0 15px 40px rgba(0,0,0,0.1);}
+    .dashboard-grid{display:grid;grid-template-columns:420px 1fr;gap:25px;}
+    @media(max-width:1100px){.dashboard-grid{grid-template-columns:1fr;}}
+    .panel{background:#fff;border-radius:20px;padding:25px;box-shadow:0 15px 40px rgba(0,0,0,0.08);}
+    .panel-header{background:linear-gradient(90deg,var(--primary),#ea580c);color:#fff;padding:15px;border-radius:15px;font-weight:700;margin:-25px -25px 20px -25px;}
+    label{display:block;font-weight:600;margin:12px 0 6px;color:#374151;}
+    input,select,textarea{width:100%;padding:12px;border:2px solid #f3f4f6;border-radius:12px;font-size:14px;transition:0.2s;background:#fafbfc;}
+    input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary);background:#fff;box-shadow:0 0 0 3px rgba(249,115,22,0.1);}
+    .btn{padding:12px 20px;border-radius:12px;border:0;cursor:pointer;font-weight:600;font-size:14px;transition:0.2s;display:inline-flex;align-items:center;gap:8px;}
+    .btn-primary{background:linear-gradient(90deg,var(--primary),#ea580c);color:#fff;box-shadow:0 4px 15px rgba(249,115,22,0.4);}
+    .btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(249,115,22,0.5);}
+    .btn-success{background:var(--success);color:#fff;}
+    .btn-ghost{background:#f8fafc;border:2px solid #e5e7eb;color:#374151;}
+    .btn-group{display:flex;gap:12px;flex-wrap:wrap;}
+    .btn-group .btn{flex:1;min-width:120px;justify-content:center;}
+    .dishes-section{background:linear-gradient(135deg,#f8fafc,#f1f5f9);padding:20px;border-radius:16px;border:1px solid #e5e7eb;margin:16px 0;}
+    .dish-categories{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:20px;}
+    .category-btn{padding:12px;border-radius:12px;border:2px solid #e5e7eb;background:#fff;cursor:pointer;font-weight:600;font-size:14px;transition:0.2s;text-align:center;}
+    .category-btn:hover{border-color:var(--primary);transform:translateY(-2px);}
+    .category-btn.active{background:var(--primary);color:#fff;border-color:var(--primary);}
+    .veg{background:#dcfce7;color:#166534;border-color:#22c55e;} .veg.active{background:#22c55e;color:#fff;}
+    .nonveg{background:#fee2e2;color:#dc2626;border-color:#ef4444;} .nonveg.active{background:#ef4444;color:#fff;}
+    .beverages{background:#dbeafe;color:#1d4ed8;border-color:#2563eb;} .beverages.active{background:#2563eb;color:#fff;}
+    .desserts{background:#fef3c7;color:#92400e;border-color:#facc15;} .desserts.active{background:#facc15;color:#92400e;}
+    .dish-item{display:flex;align-items:center;justify-content:space-between;padding:12px;background:#fff;border-radius:12px;margin-bottom:10px;border-left:4px solid var(--success);}
+    .popular-dishes{margin-bottom:15px;}
+    .popular-title{font-size:14px;font-weight:600;color:#374151;margin-bottom:10px;}
+    .popular-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+    .popular-item{padding:10px 12px;background:#f8fafc;border-radius:10px;font-size:13px;cursor:pointer;transition:0.2s;border:1px solid #e6e9ef;}
+    .popular-item:hover{background:#e6f3ff;border-color:var(--primary);}
+    /* LIVE TABLE STATUS - ENHANCED */
+    .tables-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px;padding:20px;max-height:650px;overflow-y:auto;}
+    .table-card{background:linear-gradient(145deg,#fff,#f8fafc);border-radius:20px;padding:25px;border:2px solid #e5e7eb;box-shadow:0 10px 30px rgba(0,0,0,0.08);transition:0.3s;cursor:pointer;position:relative;overflow:hidden;}
+    .table-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--primary),var(--success));}
+    .table-card:hover{transform:translateY(-5px);box-shadow:0 20px 50px rgba(0,0,0,0.15);}
+    .table-card.occupied::before{background:linear-gradient(90deg,#facc15,#fbbf24);}
+    .table-card.cleaning::before{background:linear-gradient(90deg,#ef4444,#dc2626);}
+    .table-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px;}
+    .table-id{font-size:32px;font-weight:800;color:#1f2937;}
+    .status-badge{padding:10px 20px;border-radius:25px;font-size:14px;font-weight:800;min-width:110px;text-align:center;box-shadow:0 4px 12px rgba(0,0,0,0.15);}
+    .status-Available{background:#dcfce7;color:#166534;border:2px solid #22c55e;}
+    .status-Occupied{background:#fef3c7;color:#92400e;border:2px solid #facc15;}
+    .status-Cleaning{background:#fee2e2;color:#dc2626;border:2px solid #ef4444;}
+    .status-Reserved{background:#dbeafe;color:#1d4ed8;border:2px solid #2563eb;}
+    .table-info{font-size:14px;color:#6b7280;margin-bottom:12px;}
+    .customer-info{font-weight:600;margin:12px 0;color:#374151;}
+    .dish-tag{background:#eff6ff;color:#1d4ed8;padding:8px 14px;border-radius:20px;font-size:14px;font-weight:600;display:inline-block;margin:6px 6px 0 0;box-shadow:0 2px 8px rgba(59,130,246,0.2);}
+    .dish-count{font-size:12px;background:#10b981;color:#fff;padding:4px 8px;border-radius:12px;font-weight:700;margin-left:6px;}
+    .table-actions{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:20px;}
+    .live-indicator{position:absolute;top:10px;right:10px;width:12px;height:12px;background:var(--success);border-radius:50%;box-shadow:0 0 10px var(--success);animation:pulse 2s infinite;}
+    .table-card.occupied .live-indicator{background:#facc15;box-shadow:0 0 10px #facc15;}
+    .table-card.cleaning .live-indicator{background:#ef4444;box-shadow:0 0 10px #ef4444;}
+    @keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.5;}}
+    .toast-container{position:fixed;top:25px;right:25px;z-index:1000;display:flex;flex-direction:column;gap:12px;}
+    .toast{background:linear-gradient(90deg,#0f172a,#1e293b);color:#fff;padding:16px 20px;border-radius:15px;box-shadow:0 15px 40px rgba(0,0,0,0.3);font-size:14px;animation:toastSlide 0.3s ease;max-width:380px;}
+    @keyframes toastSlide{from{transform:translateX(100%);opacity:0;}to{transform:translateX(0);opacity:1;}}
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="brand">🍽️ Smart Restaurant - Waiter</div>
+    <div>
+      <a href="index.html" style="color:#e5e7eb;text-decoration:none;margin-right:20px;">🏠 Home</a>
+      <a href="kitchen.html" style="color:#e5e7eb;text-decoration:none;">🍳 Kitchen</a>
+      <a href="login.html" style="color:#e5e7eb;text-decoration:none;margin-left:20px;">Logout</a>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="header" style="display:flex;justify-content:space-between;align-items:center;">
+      <div>
+        <h1 style="margin:0;font-size:32px;">Waiter Dashboard</h1>
+        <div style="color:#6b7280;font-size:15px;">Assign tables for waiting customers & add dishes</div>
+      </div>
+      <div style="padding:10px 20px;background:var(--success);color:#fff;border-radius:12px;font-weight:600;">🟢 Live</div>
+    </div>
+
+    <div class="dashboard-grid">
+      <!-- ASSIGNMENT FORM (UNCHANGED) -->
+      <div class="panel">
+        <div class="panel-header">📋 Table Assignment</div>
+        <form id="assignForm">
+          <label>👥 Customer Name</label>
+          <input id="custName" placeholder="e.g. Sharma Family" required>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:15px;">
+            <div>
+              <label>👨‍👩‍👧‍👦 Group Size</label>
+              <input id="groupSize" type="number" min="1" value="2" required>
+            </div>
+            <div>
+              <label>🏷️ Section</label>
+              <select id="sectionSelect">
+                <option value="A">Section A (Window)</option>
+                <option value="B">Section B (Main)</option>
+                <option value="C">Section C (VIP)</option>
+              </select>
+            </div>
+          </div>
+
+          <label>🪑 Available Table</label>
+          <select id="tableSelect">
+            <option value="">Select section first</option>
+          </select>
+
+          <label>📝 Special Notes</label>
+          <textarea id="notes" rows="3" placeholder="Birthday, window seat, dietary restrictions..."></textarea>
+
+          <div class="dishes-section">
+            <div style="margin-bottom:15px;">
+              <strong style="font-size:16px;">🍛 Add Dishes</strong>
+              <span style="font-size:13px;color:#6b7280;">Multiple dishes supported</span>
+            </div>
+
+            <!-- DISH CATEGORIES (UNCHANGED) -->
+            <div class="dish-categories">
+              <button type="button" class="category-btn veg active" data-category="veg">🥬 Veg</button>
+              <button type="button" class="category-btn nonveg" data-category="nonveg">🍗 Non-Veg</button>
+              <button type="button" class="category-btn beverages" data-category="beverages">🥤 Beverages</button>
+              <button type="button" class="category-btn desserts" data-category="desserts">🍰 Desserts</button>
+            </div>
+
+            <!-- POPULAR DISHES (UNCHANGED) -->
+            <div class="popular-dishes">
+              <div class="popular-title">Popular Dishes</div>
+              <div class="popular-grid" id="popularDishes"></div>
+            </div>
+
+            <!-- CUSTOM DISH INPUT (UNCHANGED) -->
+            <div style="display:grid;grid-template-columns:2fr 1fr 90px;gap:12px;margin-bottom:15px;">
+              <input id="dishName" placeholder="Type custom dish name...">
+              <input id="dishQty" type="number" min="1" value="1" placeholder="Qty">
+              <button type="button" class="btn btn-success" id="addDish">➕ Add</button>
+            </div>
+            
+            <div id="dishList"></div>
+          </div>
+
+          <div class="btn-group">
+            <button class="btn btn-primary" type="submit">✅ Assign Table</button>
+            <button class="btn btn-ghost" type="button" id="markReserved">🔒 Reserve</button>
+            <button class="btn btn-ghost" type="button" id="clearForm">🗑️ Clear All</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- LIVE TABLE STATUS - COMPLETELY FIXED & ENHANCED -->
+      <div class="panel">
+        <div class="panel-header" style="display:flex;justify-content:space-between;align-items:center;">
+          🏠 Live Table Status
+          <div style="display:flex;gap:10px;font-size:14px;">
+            <span id="liveTables">7</span> Tables | 
+            <span id="availableCount" style="color:#22c55e;font-weight:700;">4</span> Available
+          </div>
+        </div>
+        <div id="tablesGrid" class="tables-grid"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script>
+    // DISH DATA (UNCHANGED)
+    const dishCategories = {
+      veg: ['Paneer Butter Masala', 'Dal Makhani', 'Aloo Gobi', 'Malai Kofta', 'Palak Paneer', 'Dal Tadka', 'Mix Veg', 'Bhindi Masala'],
+      nonveg: ['Chicken Tikka Masala', 'Butter Chicken', 'Chicken Biryani', 'Mutton Rogan Josh', 'Fish Fry', 'Chicken 65', 'Egg Curry', 'Chicken Lollipop'],
+      beverages: ['Coke', 'Pepsi', 'Thums Up', 'Sprite', 'Lassi', 'Mango Shake', 'Cold Coffee', 'Fresh Lime Soda'],
+      desserts: ['Gulab Jamun', 'Rasmalai', 'Ice Cream', 'Fruit Cream', 'Carrot Halwa', 'Kheer']
+    };
+
+    // FIXED TABLES DATA - NOW WILL SHOW PROPERLY
+    const defaultTables = [
+      {id:'A1',section:'A',capacity:2,status:'Available',notes:'',dishes:[],time:Date.now()},
+      {id:'A2',section:'A',capacity:4,status:'Reserved',notes:'VIP Guest - Mr. Singh',dishes:[],time:Date.now()},
+      {id:'A3',section:'A',capacity:6,status:'Cleaning',notes:'Just cleared',dishes:[],time:Date.now()},
+      {id:'B1',section:'B',capacity:2,status:'Available',notes:'',dishes:[],time:Date.now()},
+      {id:'B2',section:'B',capacity:4,status:'Occupied',notes:'Patel Family (4)',dishes:[{name:'Dal Tadka',qty:2},{name:'Butter Naan',qty:4},{name:'Lassi',qty:2}],time:Date.now()},
+      {id:'C1',section:'C',capacity:4,status:'Available',notes:'',dishes:[],time:Date.now()},
+      {id:'C2',section:'C',capacity:6,status:'Occupied',notes:'Sharma Family Birthday (6)',dishes:[{name:'Paneer Butter Masala',qty:3},{name:'Chicken Biryani',qty:4},{name:'Gulab Jamun',qty:6}],time:Date.now()}
+    ];
+    
+    let tables = JSON.parse(localStorage.getItem('tablesState')) || defaultTables;
+    let currentDishes = [];
+    let currentCategory = 'veg';
+
+    // UTILS (UNCHANGED)
+    function saveTables() { localStorage.setItem('tablesState', JSON.stringify(tables)); }
+    function toast(msg) {
+      const container = document.getElementById('toastContainer');
+      const t = document.createElement('div');
+      t.className = 'toast';
+      t.textContent = msg;
+      container.append(t);
+      setTimeout(() => t.remove(), 3500);
+    }
+
+    // UPDATE LIVE COUNTS
+    function updateLiveCounts() {
+      const available = tables.filter(t => t.status === 'Available').length;
+      document.getElementById('liveTables').textContent = tables.length;
+      document.getElementById('availableCount').textContent = available;
+    }
+
+    // RENDER POPULAR DISHES (UNCHANGED)
+    function renderPopularDishes() {
+      const container = document.getElementById('popularDishes');
+      container.innerHTML = '';
+      dishCategories[currentCategory].slice(0, 6).forEach(dish => {
+        const div = document.createElement('div');
+        div.className = 'popular-item';
+        div.textContent = dish;
+        div.onclick = () => {
+          document.getElementById('dishName').value = dish;
+          toast(`Added ${dish}`);
+        };
+        container.appendChild(div);
+      });
+    }
+
+    // CATEGORY BUTTONS (UNCHANGED)
+    document.querySelectorAll('.category-btn').forEach(btn => {
+      btn.onclick = () => {
+        document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentCategory = btn.dataset.category;
+        renderPopularDishes();
+      };
+    });
+
+    // ELEMENTS (UNCHANGED)
+    const sectionSelect = document.getElementById('sectionSelect');
+    const tableSelect = document.getElementById('tableSelect');
+    const tablesGrid = document.getElementById('tablesGrid');
+    const dishName = document.getElementById('dishName');
+    const dishQty = document.getElementById('dishQty');
+    const dishList = document.getElementById('dishList');
+
+    // FIXED RENDER TABLE OPTIONS
+    function renderTableOptions() {
+      tableSelect.innerHTML = '<option value="">Select available table...</option>';
+      const sec = sectionSelect.value;
+      const available = tables.filter(t => t.section === sec && t.status === 'Available');
+      available.forEach(t => {
+        const option = document.createElement('option');
+        option.value = t.id;
+        option.textContent = `${t.id} (${t.capacity} seats)`;
+        tableSelect.append(option);
+      });
+    }
+
+    // COMPLETELY FIXED & ENHANCED RENDER TABLES
+    function renderTables() {
+      tablesGrid.innerHTML = '';
+      tables.forEach(table => {
+        const card = document.createElement('div');
+        card.className = `table-card ${table.status.toLowerCase()}`;
+        card.innerHTML = `
+          <div class="live-indicator"></div>
+          <div class="table-header">
+            <div>
+              <div class="table-id">${table.id}</div>
+              <div class="table-info">${table.section} Section • ${table.capacity} seats</div>
+            </div>
+            <div class="status-badge status-${table.status}">${table.status}</div>
+          </div>
+          ${table.notes ? `<div class="customer-info">${table.notes}</div>` : '<div class="customer-info" style="color:#9ca3af;">No customer info</div>'}
+          <div style="display:flex;flex-wrap:wrap;gap:6px;margin:20px 0;">
+            ${table.dishes.length ? 
+              table.dishes.map(d => `
+                <span class="dish-tag">
+                  🍛 ${d.name}
+                  <span class="dish-count">×${d.qty}</span>
+                </span>
+              `).join('') :
+              '<span class="dish-tag" style="background:#f3f4f6;color:#6b7280;">No dishes added</span>'
+            }
+          </div>
+          <div class="table-actions">
+            <button class="btn btn-ghost" onclick="selectTable('${table.id}')">📋 Select</button>
+            <button class="btn" style="background:#f59e0b;color:#fff;" onclick="updateStatus('${table.id}','Cleaning')">🧹 Cleaning</button>
+            <button class="btn btn-success" onclick="updateStatus('${table.id}','Available')">✅ Ready</button>
+          </div>
+        `;
+        tablesGrid.append(card);
+      });
+      updateLiveCounts();
+    }
+
+    // ALL OTHER EVENT HANDLERS (UNCHANGED)
+    sectionSelect.onchange = renderTableOptions;
+
+    document.getElementById('addDish').onclick = () => {
+      const name = dishName.value.trim();
+      const qty = parseInt(dishQty.value) || 1;
+      if (!name) return toast('Enter dish name');
+      
+      currentDishes.push({name, qty});
+      dishList.innerHTML = currentDishes.map((d, i) => `
+        <div class="dish-item">
+          <div><strong>🍛 ${d.name}</strong> <span style="color:var(--success);">×${d.qty}</span></div>
+          <button type="button" class="btn" style="background:var(--danger);color:#fff;padding:6px 12px;font-size:12px;" onclick="removeDish(${i})">×</button>
+        </div>
+      `).join('');
+      
+      dishName.value = ''; dishQty.value = 1;
+    };
+
+    document.getElementById('assignForm').onsubmit = e => {
+      e.preventDefault();
+      const custName = document.getElementById('custName').value.trim();
+      const groupSize = document.getElementById('groupSize').value;
+      const notes = document.getElementById('notes').value.trim();
+      const tableId = tableSelect.value;
+      
+      if (!tableId) return toast('⚠️ Please select a table');
+      
+      const table = tables.find(t => t.id === tableId);
+      table.status = 'Occupied';
+      table.notes = `${custName} (${groupSize}) ${notes}`.trim();
+      table.dishes = [...currentDishes];
+      table.time = Date.now();
+      
+      saveTables();
+      currentDishes = [];
+      dishList.innerHTML = '';
+      e.target.reset();
+      
+      renderTableOptions();
+      renderTables();
+      toast(`✅ Table ${tableId} assigned to ${custName}`);
+    };
+
+    document.getElementById('markReserved').onclick = () => {
+      const tableId = tableSelect.value;
+      if (!tableId) return toast('⚠️ Select a table first');
+      updateStatus(tableId, 'Reserved');
+    };
+
+    document.getElementById('clearForm').onclick = () => {
+      document.getElementById('assignForm').reset();
+      currentDishes = [];
+      dishList.innerHTML = '';
+      renderTableOptions();
+    };
+
+    // GLOBAL FUNCTIONS (UNCHANGED)
+    window.selectTable = id => {
+      const table = tables.find(t => t.id === id);
+      sectionSelect.value = table.section;
+      renderTableOptions();
+      tableSelect.value = id;
+      toast(`${id} selected`);
+    };
+
+    window.updateStatus = (id, status) => {
+      const table = tables.find(t => t.id === id);
+      table.status = status;
+      if (status === 'Available') {
+        table.notes = '';
+        table.dishes = [];
+      }
+      table.time = Date.now();
+      saveTables();
+      renderTables();
+      renderTableOptions();
+      toast(`Table ${id} → ${status}`);
+    };
+
+    window.removeDish = index => {
+      currentDishes.splice(index, 1);
+      dishList.innerHTML = currentDishes.map((d, i) => `
+        <div class="dish-item">
+          <div><strong>🍛 ${d.name}</strong> <span style="color:var(--success);">×${d.qty}</span></div>
+          <button type="button" class="btn" style="background:var(--danger);color:#fff;padding:6px 12px;font-size:12px;" onclick="removeDish(${i})">×</button>
+        </div>
+      `).join('');
+    };
+
+    // INIT - NOW TABLES WILL SHOW PERFECTLY
+    renderPopularDishes();
+    renderTableOptions();
+    renderTables();
+  </script>
+</body>
+</html>

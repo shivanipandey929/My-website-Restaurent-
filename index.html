@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Smart Restaurant - Home</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    :root{--primary:#f97316;--bg:#fef3c7;--card:#fff;}
+    *{box-sizing:border-box;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;margin:0;padding:0;}
+    body{background:linear-gradient(135deg,#fef3c7 0%,#fed7aa 50%,#fdba74 100%);min-height:100vh;color:#1f2937;}
+    nav{background:linear-gradient(90deg,#0f172a,#1e293b);padding:15px 25px;display:flex;justify-content:space-between;align-items:center;color:#fff;box-shadow:0 4px 20px rgba(0,0,0,0.2);}
+    .brand{font-size:22px;font-weight:700;}
+    .nav-links a{color:#e5e7eb;text-decoration:none;padding:8px 16px;border-radius:8px;transition:0.2s;margin-left:10px;}
+    .nav-links a:hover{background:rgba(255,255,255,0.1);color:#fbbf24;}
+    .container{max-width:1200px;margin:0 auto;padding:30px 20px;}
+    .hero{text-align:center;padding:60px 20px;background:rgba(255,255,255,0.1);backdrop-filter:blur(10px);border-radius:24px;margin-bottom:40px;}
+    .hero h1{font-size:42px;margin:0 0 15px;color:#0f172a;}
+    .hero p{font-size:18px;color:#6b7280;margin-bottom:30px;}
+    .btn{display:inline-block;padding:15px 35px;background:linear-gradient(90deg,var(--primary),#ea580c);color:#fff;border-radius:50px;font-weight:700;font-size:16px;box-shadow:0 10px 30px rgba(249,115,22,0.4);transition:0.3s;}
+    .btn:hover{transform:translateY(-3px);box-shadow:0 15px 40px rgba(249,115,22,0.5);}
+    .features{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:25px;margin-top:50px;}
+    .feature-card{background:#fff;padding:30px;border-radius:20px;box-shadow:0 15px 40px rgba(0,0,0,0.1);text-align:center;transition:0.3s;}
+    .feature-card:hover{transform:translateY(-8px);}
+    .feature-icon{font-size:48px;margin-bottom:20px;}
+    .demo-info{background:#fff;padding:25px;border-radius:20px;box-shadow:0 10px 30px rgba(0,0,0,0.1);margin-top:40px;}
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="brand">🍽️ Smart Restaurant System</div>
+    <div class="nav-links">
+      <a href="index.html">🏠 Home</a>
+      <a href="login.html">👨‍🍳 Waiter Login</a>
+      <a href="kitchen.html">🍳 Kitchen</a>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="hero">
+      <h1>Restaurant Management System</h1>
+      <p>Professional waiter & kitchen dashboard with real-time table assignment, dish tracking & status updates</p>
+      <a href="login.html" class="btn">🚀 Start Waiter Dashboard</a>
+    </div>
+
+    <div class="features">
+      <div class="feature-card">
+        <div class="feature-icon">📋</div>
+        <h2>Smart Table Assignment</h2>
+        <p>Assign waiting customers to perfect tables by section, capacity & special requests</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🍛</div>
+        <h2>Multiple Dish Orders</h2>
+        <p>Add unlimited dishes per table with quantities - kitchen sees everything instantly</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">👨‍🍳</div>
+        <h2>Kitchen Dashboard</h2>
+        <p>Dark theme chef view with dish preparation status & table readiness controls</p>
+      </div>
+    </div>
+
+    <div class="demo-info">
+      <h3 style="text-align:center;margin-bottom:20px;">Demo Credentials</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:30px;text-align:center;">
+        <div>
+          <div style="font-size:24px;font-weight:700;color:var(--primary);">waiter</div>
+          <div style="color:#6b7280;">Username</div>
+        </div>
+        <div>
+          <div style="font-size:24px;font-weight:700;color:var(--primary);">1234</div>
+          <div style="color:#6b7280;">Password</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
