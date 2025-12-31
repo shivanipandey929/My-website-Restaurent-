@@ -2,447 +2,428 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>Kitchen Dashboard - Smart Restaurant</title>
+  <title>Kitchen Management - L'Elite</title>
   <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  
   <style>
-    :root{
-      /* Updated Professional Theme Colors */
-      --primary:#3b82f6;        /* Blue */
-      --success:#10b981;        /* Teal Green */
-      --warning:#f59e0b;        /* Amber */
-      --danger:#ef4444;         /* Red */
-
-      --bg:#0d1220;             /* Deep Navy */
-      --card:#1b2433;           /* Dark Card */
-      --border:#3b4353;         /* Soft Grey Border */
-      --text:#f1f5f9;           /* Light Text */
-      --text-muted:#94a3b8;     /* Muted Gray */
+    :root {
+      --primary-color: #1a1a1a;
+      --accent-color: #c5a059;
+      --bg-color: #f9f7f2;
+      --text-dark: #2d2d2d;
+      --text-light: #ffffff;
+      --font-heading: 'Playfair Display', serif;
+      --font-body: 'Lato', sans-serif;
+      --success: #2e7d32;
+      --border-color: #e0e0e0;
     }
 
-    *{
-      box-sizing:border-box;
-      font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
-      margin:0;
-      padding:0;
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
 
-    body{
-      background:linear-gradient(135deg,#0f172a 0%,#1e293b 45%,#3b4c63 100%);
-      min-height:100vh;
-      color:var(--text);
+    body {
+      font-family: var(--font-body);
+      background-color: var(--bg-color);
+      color: var(--text-dark);
+      line-height: 1.6;
     }
 
-    nav{
-      background:linear-gradient(90deg,#0d1220,#1b2433);
-      padding:15px 25px;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      box-shadow:0 4px 20px rgba(0,0,0,0.3);
-      backdrop-filter:blur(10px);
+    h1, h2, h3 {
+      font-family: var(--font-heading);
     }
 
-    .brand{font-size:22px;font-weight:700;}
-
-    .nav-links a{
-      color:var(--text);
-      text-decoration:none;
-      padding:10px 20px;
-      border-radius:12px;
-      transition:0.2s;
-      margin-left:10px;
-    }
-    .nav-links a:hover{
-      background:rgba(59,130,246,0.2);
-      color:var(--primary);
-    }
-
-    .container{max-width:1400px;margin:0 auto;padding:30px 25px;}
-
-    .header{
-      background:linear-gradient(135deg,var(--card),#2a3447);
-      padding:30px;
-      border-radius:24px;
-      margin-bottom:30px;
-      box-shadow:0 20px 50px rgba(0,0,0,0.4);
-      border:1px solid var(--border);
+    /* Navigation */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: rgba(26, 26, 26, 0.98);
+      padding: 20px 50px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 1000;
+      border-bottom: 1px solid var(--accent-color);
     }
 
-    .header-top{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      margin-bottom:15px;
+    .logo {
+      color: var(--accent-color);
+      font-size: 1.5rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-family: var(--font-heading);
     }
 
-    .header h1{font-size:34px;margin:0;color:var(--text);}
-    .header-subtitle{font-size:16px;color:var(--text-muted);}
-
-    .status-badge{
-      padding:8px 20px;
-      border-radius:50px;
-      background:rgba(59,130,246,0.15);
-      color:var(--primary);
-      font-weight:700;
+    .nav-links a {
+      color: var(--text-light);
+      text-decoration: none;
+      margin-left: 30px;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: color 0.3s;
     }
 
-    .stats-grid{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-      gap:20px;
-      margin-bottom:30px;
+    .nav-links a:hover {
+      color: var(--accent-color);
     }
 
-    .stat-card{
-      background:var(--card);
-      padding:25px;
-      border-radius:20px;
-      text-align:center;
-      box-shadow:0 10px 30px rgba(0,0,0,0.2);
-      border:1px solid var(--border);
-      transition:0.3s;
+    /* Layout */
+    .container {
+      max-width: 1400px;
+      margin: 120px auto 50px;
+      padding: 0 20px;
     }
 
-    .stat-card:hover{transform:translateY(-5px);}
-
-    .stat-number{
-      font-size:32px;
-      font-weight:800;
-      color:var(--primary);
+    .dashboard-header {
+      text-align: center;
+      margin-bottom: 50px;
     }
 
-    .stat-label{font-size:14px;color:var(--text-muted);}
-
-    .kitchen-grid{
-      display:grid;
-      grid-template-columns:repeat(auto-fill,minmax(320px,1fr));
-      gap:25px;
+    .dashboard-header h1 {
+      font-size: 3rem;
+      color: var(--primary-color);
+      margin-bottom: 10px;
     }
 
-    .order-card{
-      background:linear-gradient(145deg,var(--card),#2c3749);
-      border-radius:24px;
-      padding:25px;
-      border:1px solid var(--border);
-      box-shadow:0 15px 40px rgba(0,0,0,0.3);
-      transition:0.3s;
-      position:relative;
-      overflow:hidden;
+    /* Stats Grid */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      margin-bottom: 40px;
     }
 
-    .order-card::before{
-      content:'';
-      position:absolute;
-      top:0;left:0;right:0;
-      height:4px;
-      background:linear-gradient(90deg,var(--primary),var(--success));
+    .stat-card {
+      background: #fff;
+      padding: 30px;
+      border: 1px solid var(--border-color);
+      text-align: center;
     }
 
-    .order-card:hover{
-      transform:translateY(-8px);
-      box-shadow:0 25px 60px rgba(0,0,0,0.4);
+    .stat-number {
+      font-family: var(--font-heading);
+      font-size: 2.5rem;
+      color: var(--accent-color);
+      display: block;
     }
 
-    .order-header{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      margin-bottom:20px;
+    .stat-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: #888;
+      margin-top: 5px;
     }
 
-    .table-id{font-size:28px;font-weight:800;color:var(--text);}
-
-    .order-status{
-      padding:8px 16px;
-      border-radius:20px;
-      font-size:13px;
-      font-weight:700;
-      min-width:100px;
-      text-align:center;
+    /* Kitchen Grid */
+    .kitchen-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 30px;
     }
 
-    .status-Occupied{
-      background:rgba(245,158,11,0.18);
-      color:#fbbf24;
+    .order-card {
+      background: #fff;
+      border: 1px solid var(--border-color);
+      padding: 30px;
+      position: relative;
+      transition: transform 0.3s ease;
     }
 
-    .status-Cleaning{
-      background:rgba(239,68,68,0.18);
-      color:var(--danger);
+    .order-card:hover {
+      transform: translateY(-5px);
     }
 
-    .order-details{margin-bottom:20px;}
-
-    .detail-row{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      padding:10px 0;
-      border-bottom:1px solid var(--border);
+    .order-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      border-bottom: 1px solid var(--accent-color);
+      padding-bottom: 15px;
+      margin-bottom: 20px;
     }
 
-    .detail-label{font-size:14px;color:var(--text-muted);}
-
-    .dishes-list{
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-      margin-bottom:25px;
+    .table-id {
+      font-family: var(--font-heading);
+      font-size: 2rem;
+      color: var(--primary-color);
     }
 
-    .dish-item{
-      background:rgba(59,130,246,0.15);
-      padding:10px 15px;
-      border-radius:15px;
-      font-size:14px;
-      font-weight:600;
-      color:var(--primary);
+    .status-badge {
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 4px 10px;
+      background: var(--bg-color);
+      border: 1px solid #ddd;
     }
 
-    .action-buttons{display:flex;gap:12px;}
-
-    .btn{
-      flex:1;padding:12px;border-radius:12px;border:0;
-      cursor:pointer;font-weight:600;font-size:14px;
-      transition:0.2s;display:flex;align-items:center;
-      justify-content:center;gap:8px;
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      margin-bottom: 8px;
     }
 
-    .btn-cleaning{
-      background:rgba(245,158,11,0.18);
-      color:#f59e0b;
-      border:1px solid rgba(245,158,11,0.3);
+    .detail-label {
+      color: #888;
+      text-transform: uppercase;
+      font-size: 0.7rem;
+      letter-spacing: 1px;
     }
 
-    .btn-ready{
-      background:var(--success);
-      color:#fff;
-      box-shadow:0 4px 15px rgba(16,185,129,0.4);
+    /* Dishes List */
+    .dishes-list {
+      margin: 20px 0;
+      background: #fafafa;
+      padding: 15px;
+      border-left: 2px solid var(--accent-color);
     }
 
-    .btn:hover{transform:translateY(-2px);}
-
-    .empty-state{
-      grid-column:1/-1;
-      text-align:center;
-      padding:60px 40px;
-      background:var(--card);
-      border-radius:24px;
-      border:2px dashed var(--border);
+    .dish-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 5px 0;
+      font-size: 0.9rem;
+      border-bottom: 1px solid #f0f0f0;
     }
 
-    .empty-icon{font-size:64px;color:var(--text-muted);margin-bottom:20px;}
-
-    .toast-container{
-      position:fixed;top:25px;right:25px;
-      z-index:1000;display:flex;flex-direction:column;
-      gap:15px;
+    .dish-qty {
+      font-weight: 700;
+      color: var(--accent-color);
     }
 
-    .toast{
-      background:linear-gradient(90deg,#0d1220,#1b2433);
-      color:var(--text);
-      padding:18px 25px;
-      border-radius:16px;
-      box-shadow:0 20px 50px rgba(0,0,0,0.4);
-      font-size:15px;
-      animation:toastSlide 0.4s ease;
-      max-width:400px;
-      border:1px solid var(--border);
+    /* Action Buttons */
+    .action-group {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 25px;
     }
 
-    @keyframes toastSlide{
-      from{transform:translateX(100%);opacity:0;}
-      to{transform:translateX(0);opacity:1;}
+    .btn {
+      padding: 12px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: 0.3s;
+      border: 1px solid var(--primary-color);
+      background: transparent;
     }
 
-    @media(max-width:768px){
-      .kitchen-grid{grid-template-columns:1fr;}
-      .action-buttons{flex-direction:column;}
+    .btn-ready {
+      background: var(--primary-color);
+      color: var(--accent-color);
+      border-color: var(--accent-color);
+    }
+
+    .btn-ready:hover {
+      background: var(--accent-color);
+      color: var(--primary-color);
+    }
+
+    .btn-clean:hover {
+      background: #f0f0f0;
+    }
+
+    .empty-state {
+      grid-column: 1/-1;
+      text-align: center;
+      padding: 100px;
+      background: #fff;
+      border: 1px dashed var(--accent-color);
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: var(--primary-color);
+      color: var(--accent-color);
+      padding: 15px 30px;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      letter-spacing: 1px;
+      z-index: 2000;
+    }
+
+    footer {
+      background-color: var(--primary-color);
+      color: white;
+      padding: 50px;
+      text-align: center;
+      margin-top: 50px;
+    }
+
+    footer p {
+      opacity: 0.5;
+      font-size: 0.7rem;
+      letter-spacing: 1px;
     }
   </style>
 </head>
-
 <body>
+
   <nav>
-    <div class="brand">🍳 Smart Restaurant - Kitchen</div>
+    <div class="logo">L'ELITE</div>
     <div class="nav-links">
-      <a href="index.html">🏠 Home</a>
-      <a href="waiter.html">👨‍🍳 Waiter</a>
+      <a href="index.html">Home</a>
+      <a href="waiter.html">Staff</a>
       <a href="login.html">Logout</a>
     </div>
   </nav>
 
   <div class="container">
-    <div class="header">
-      <div class="header-top">
-        <div>
-          <h1>Kitchen Dashboard</h1>
-          <div class="header-subtitle">Real-time orders from waiter • Auto-sync</div>
-        </div>
-        <div class="status-badge" id="liveCount">0 Live Orders</div>
-      </div>
+    <div class="dashboard-header">
+      <h1>Kitchen Console</h1>
+      <p style="text-transform: uppercase; letter-spacing: 3px; font-size: 0.75rem; color: var(--accent-color);">Culinary Operations</p>
     </div>
 
     <div class="stats-grid">
       <div class="stat-card">
-        <div class="stat-number" id="totalOrders">0</div>
-        <div class="stat-label">Active Orders</div>
+        <span class="stat-number" id="totalOrders">0</span>
+        <span class="stat-label">Active Tickets</span>
       </div>
       <div class="stat-card">
-        <div class="stat-number" id="totalDishes">0</div>
-        <div class="stat-label">Dishes Pending</div>
+        <span class="stat-number" id="totalDishes">0</span>
+        <span class="stat-label">Items to Prep</span>
       </div>
       <div class="stat-card">
-        <div class="stat-number" id="tablesCooking">0</div>
-        <div class="stat-label">Tables Cooking</div>
+        <span class="stat-number">2-5m</span>
+        <span class="stat-label">Avg Pace</span>
       </div>
       <div class="stat-card">
-        <div class="stat-number" id="avgTime">0m</div>
-        <div class="stat-label">Avg Prep Time</div>
+        <span class="stat-number" id="tablesCooking">0</span>
+        <span class="stat-label">Cleaning Phase</span>
       </div>
     </div>
 
     <div class="kitchen-grid" id="kitchenGrid"></div>
   </div>
 
-  <div class="toast-container" id="toastContainer"></div>
+  <footer>
+    <p>&copy; 2024 L'ELITE CULINARY SYSTEMS. ALL RIGHTS RESERVED.</p>
+  </footer>
 
-<script>
-  function loadTables() {
-    return JSON.parse(localStorage.getItem('tablesState')) || [];
-  }
+  <div id="toastContainer"></div>
 
-  function saveTables(tables) {
-    localStorage.setItem('tablesState', JSON.stringify(tables));
-  }
-
-  function toast(msg) {
-    const container = document.getElementById('toastContainer');
-    const t = document.createElement('div');
-    t.className = 'toast';
-    t.textContent = `🍳 ${msg}`;
-    container.appendChild(t);
-    setTimeout(() => t.remove(), 4000);
-  }
-
-  function updateStats() {
-    const tables = loadTables();
-    const activeOrders = tables.filter(t => t.status === 'Occupied' || t.status === 'Cleaning');
-
-    document.getElementById('totalOrders').textContent = activeOrders.length;
-    document.getElementById('liveCount').textContent = `${activeOrders.length} Live Orders`;
-
-    let totalDishes = 0;
-    let cookingTables = tables.filter(t => t.status === 'Cleaning').length;
-
-    activeOrders.forEach(table => {
-      totalDishes += table.dishes.reduce((sum, dish) => sum + dish.qty, 0);
-    });
-
-    document.getElementById('totalDishes').textContent = totalDishes;
-    document.getElementById('tablesCooking').textContent = cookingTables;
-    document.getElementById('avgTime').textContent = '2-5m';
-  }
-
-  function renderKitchen() {
-    const grid = document.getElementById('kitchenGrid');
-    const tables = loadTables();
-
-    const pendingOrders = tables.filter(t => t.status === 'Occupied' || t.status === 'Cleaning');
-
-    if (pendingOrders.length === 0) {
-      grid.innerHTML = `
-        <div class="empty-state">
-          <div class="empty-icon">🍽️</div>
-          <h3 style="margin-bottom:15px;color:var(--text);">No Pending Orders</h3>
-          <p style="color:var(--text-muted);">All tables are ready or available. Great job team! 👏</p>
-        </div>
-      `;
-      return;
+  <script>
+    function loadTables() {
+      return JSON.parse(localStorage.getItem('tablesState')) || [];
     }
 
-    grid.innerHTML = pendingOrders.map(table => `
-      <div class="order-card" data-table-id="${table.id}">
-        <div class="order-header">
-          <div>
-            <div class="table-id">${table.id}</div>
-            <div style="font-size:14px;color:var(--text-muted);margin-top:4px;">
-              ${table.section} • ${table.capacity} seats
-            </div>
-          </div>
-          <div class="order-status status-${table.status}">${table.status}</div>
-        </div>
-        
-        <div class="order-details">
-          <div class="detail-row">
-            <span class="detail-label">Customer:</span>
-            <span style="font-weight:600;">${table.notes || 'Walk-in'}</span>
-          </div>
-          <div class="detail-row">
-            <span class="detail-label">Dishes:</span>
-            <span style="font-weight:600;">${table.dishes.reduce((sum, d) => sum + d.qty, 0)}</span>
-          </div>
-          <div class="detail-row" style="border-bottom:none;">
-            <span class="detail-label">Order Time:</span>
-            <span style="font-weight:600;">${new Date(table.time).toLocaleTimeString()}</span>
-          </div>
-        </div>
-        
-        <div class="dishes-list">
-          ${table.dishes.map(dish => `
-            <div class="dish-item">
-              🍛 ${dish.name} 
-              <span style="font-weight:700;margin-left:8px;">×${dish.qty}</span>
-            </div>
-          `).join('')}
-        </div>
-        
-        <div class="action-buttons">
-          <button class="btn btn-cleaning" onclick="updateTableStatus('${table.id}', 'Cleaning')">
-            🧹 Mark Cleaning
-          </button>
-          <button class="btn btn-ready" onclick="updateTableStatus('${table.id}', 'Available')">
-            ✅ Ready for Next
-          </button>
-        </div>
-      </div>
-    `).join('');
-
-  }
-
-  function updateTableStatus(tableId, status) {
-    const tables = loadTables();
-    const table = tables.find(t => t.id === tableId);
-
-    if (!table) return;
-
-    table.status = status;
-    if (status === 'Available') {
-      table.notes = '';
-      table.dishes = [];
+    function saveTables(tables) {
+      localStorage.setItem('tablesState', JSON.stringify(tables));
     }
-    table.time = Date.now();
 
-    saveTables(tables);
-    renderKitchen();
-    updateStats();
+    function showToast(msg) {
+      const container = document.getElementById('toastContainer');
+      const t = document.createElement('div');
+      t.className = 'toast';
+      t.textContent = msg;
+      container.appendChild(t);
+      setTimeout(() => t.remove(), 4000);
+    }
 
-    toast(status === 'Cleaning' ? 
-      `Table ${tableId} moved to Cleaning` : 
-      `Table ${tableId} ready for next customer!`
-    );
-  }
+    function updateStats() {
+      const tables = loadTables();
+      const active = tables.filter(t => t.status === 'Occupied' || t.status === 'Cleaning');
+      
+      let dishCount = 0;
+      active.forEach(t => {
+        t.dishes.forEach(d => dishCount += parseInt(d.qty));
+      });
 
-  function autoRefresh() {
-    renderKitchen();
-    updateStats();
-  }
+      document.getElementById('totalOrders').textContent = active.length;
+      document.getElementById('totalDishes').textContent = dishCount;
+      document.getElementById('tablesCooking').textContent = tables.filter(t => t.status === 'Cleaning').length;
+    }
 
-  autoRefresh();
-  setInterval(autoRefresh, 3000);
-</script>
+    function renderKitchen() {
+      const grid = document.getElementById('kitchenGrid');
+      const tables = loadTables();
+      const pending = tables.filter(t => t.status === 'Occupied' || t.status === 'Cleaning');
 
+      if (pending.length === 0) {
+        grid.innerHTML = `
+          <div class="empty-state">
+            <h3 style="text-transform: uppercase; letter-spacing: 2px;">Station Clear</h3>
+            <p style="font-size: 0.8rem; color: #888; margin-top: 10px;">All orders have been fulfilled.</p>
+          </div>
+        `;
+        return;
+      }
+
+      grid.innerHTML = pending.map(table => `
+        <div class="order-card">
+          <div class="order-header">
+            <div>
+              <div class="table-id">${table.id}</div>
+              <div style="font-size:0.65rem; color:#888; text-transform:uppercase;">${table.section} Section</div>
+            </div>
+            <div class="status-badge">${table.status}</div>
+          </div>
+          
+          <div class="order-info">
+            <div class="detail-row">
+              <span class="detail-label">Guest</span>
+              <span style="font-weight:700;">${table.notes || 'Guest'}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Time</span>
+              <span>${new Date(table.time).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
+            </div>
+          </div>
+          
+          <div class="dishes-list">
+            ${table.dishes.map(dish => `
+              <div class="dish-item">
+                <span>${dish.name}</span>
+                <span class="dish-qty">x${dish.qty}</span>
+              </div>
+            `).join('')}
+          </div>
+          
+          <div class="action-group">
+            <button class="btn btn-clean" onclick="updateStatus('${table.id}', 'Cleaning')">Cleaning</button>
+            <button class="btn btn-ready" onclick="updateStatus('${table.id}', 'Available')">Fulfill</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    window.updateStatus = (id, status) => {
+      const tables = loadTables();
+      const t = tables.find(x => x.id === id);
+      if (!t) return;
+
+      t.status = status;
+      if (status === 'Available') {
+        t.notes = '';
+        t.dishes = [];
+      }
+      t.time = Date.now();
+
+      saveTables(tables);
+      renderKitchen();
+      updateStats();
+      showToast(`Order ${id} Updated to ${status}`);
+    };
+
+    function refresh() {
+      renderKitchen();
+      updateStats();
+    }
+
+    refresh();
+    setInterval(refresh, 4000);
+  </script>
 </body>
 </html>
-
