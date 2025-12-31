@@ -1,0 +1,101 @@
+/* ==========================================
+   LOGIN PAGE SPECIFIC STYLES
+   ========================================== */
+
+.login-body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(rgba(15, 15, 15, 0.85), rgba(15, 15, 15, 0.85)), 
+              url('https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=1920&q=80');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+.login-wrapper {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 100px 20px 40px;
+}
+
+.login-card {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 60px 50px;
+  width: 100%;
+  max-width: 450px;
+  box-shadow: 0 40px 100px rgba(0,0,0,0.5);
+  text-align: center;
+  transition: opacity 0.5s ease;
+}
+
+.subtitle {
+  color: var(--accent-gold);
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  letter-spacing: 3px;
+  margin-bottom: 40px;
+  display: block;
+}
+
+.form-group {
+  text-align: left;
+  margin-bottom: 25px;
+}
+
+label {
+  display: block;
+  color: #999;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 8px;
+}
+
+input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 12px 0;
+  color: #fff;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+input:focus {
+  outline: none;
+  border-bottom: 1px solid var(--accent-gold);
+}
+
+.demo-info {
+  margin-top: 40px;
+  padding-top: 30px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.demo-creds {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.demo-creds strong {
+  color: var(--accent-gold);
+}
+
+/* Login Mobile adjustments */
+@media (max-width: 480px) {
+  .login-card {
+    padding: 40px 20px;
+  }
+  .login-card h2 {
+    font-size: 1.8rem;
+  }
+}
